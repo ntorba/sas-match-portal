@@ -1,0 +1,117 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold">Create New Class Room!</h1>
+<form class="form-register" role="form" method="post" action="{{ url_for('main.register_classroom') }}">
+    {{ form.csrf_token }}
+    <p><b>Class Name</b></p>
+    {{ 
+        form.name(
+            class="teacher-register-input",
+            placeholder="Class Name"
+        ) 
+    }}
+    <span class="error text-red-500">
+        {% if form.name.errors %}
+        {% for error in form.name.errors %}
+            {{ error }}
+        {% endfor %}
+        {% endif %}
+    </span>
+    <p><b>School District</b></p>
+    {{ 
+        form.school_district(
+            class="teacher-register-input",
+            placeholder="Class Name"
+        ) 
+    }}
+    <span class="error text-red-500">
+        {% if form.school_district.errors %}
+        {% for error in form.school_district.errors %}
+            {{ error }}
+        {% endfor %}
+        {% endif %}
+    </span>
+    </p>
+    <p><b>City</b></p>
+    {{ 
+        form.city(
+            class="teacher-register-input",
+            placeholder="City"
+        ) 
+    }}
+    <span class="error text-red-500">
+        {% if form.city.errors %}
+        {% for error in form.city.errors %}
+            {{ error }}
+        {% endfor %}
+        {% endif %}
+    </span>
+    </p>
+    <p><b>State</b></p>
+    {{ 
+        form.state(
+            class="teacher-register-input",
+            placeholder="State"
+        ) 
+    }}
+    <span class="error text-red-500">
+        {% if form.state.errors %}
+        {% for error in form.state.errors %}
+            {{ error }}
+        {% endfor %}
+        {% endif %}
+    </span>
+    </p>
+    <p><b>Country</b></p>
+    {{ 
+        form.country(
+            class="teacher-register-input",
+            placeholder="Class Name"
+        ) 
+    }}
+    <span class="error text-red-500">
+        {% if form.country.errors %}
+        {% for error in form.country.errors %}
+            {{ error }}
+        {% endfor %}
+        {% endif %}
+    </span>
+    </p>
+    <p><b>Time Zone</b></p>
+    {{ 
+        form.time_zone(
+            class="teacher-register-input",
+            placeholder="Time Zone"
+        ) 
+    }}
+    <span class="error text-red-500">
+        {% if form.time_zone.errors %}
+        {% for error in form.time_zone.errors %}
+            {{ error }}
+        {% endfor %}
+        {% endif %}
+    </span>
+    </p>
+    <p><b>Scientist Preferred Type</b></p>
+    {{ 
+        form.scientist_preferred_type(
+            class="teacher-register-input",
+            placeholder="Scientist Type"
+        ) 
+    }}
+    <span class="error text-red-500">
+        {% if form.scientist_preferred_type.errors %}
+        {% for error in form.scientist_preferred_type.errors %}
+            {{ error }}
+        {% endfor %}
+        {% endif %}
+    </span>
+    </p>
+    <button
+        type="submit"
+        class="w-full text-center py-3 rounded bg-green-300 text-black hover:bg-green-600 focus:outline-none my-1"
+    >Add Class Room!</button>
+</form>
+
+{% endblock %}

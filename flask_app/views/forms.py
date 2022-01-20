@@ -1,0 +1,135 @@
+# project/user/forms.py
+# originally taken from https://github.com/mjhea0/flask-basic-registration/blob/master/project/user/forms.py
+
+from pathlib import Path
+import pytz
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SelectField, DateTimeField
+from wtforms.validators import DataRequired, Email, Length, EqualTo
+
+from ..models import User
+
+
+class LoginForm(FlaskForm):
+    email = StringField('email', validators=[DataRequired(), Email()])
+    password = PasswordField('password', validators=[DataRequired()])
+
+with open(Path(__file__).parent.parent / "states.txt", "r") as f:
+    STATES = [i.strip("\n") for i in f.readlines()]
+
+class RegisterTeacherForm(FlaskForm):
+    # role=SelectField(
+    #     "Your Role (Teacher or Scientist)",
+    #     choices = [
+    #         "Teacher", 
+    #         "Scientist"
+    #     ]
+    # )
+    name=StringField(
+        'Name',
+        validators=[DataRequired(), Length(max=40)], 
+    )
+    email = StringField(
+        'Email',
+        validators=[DataRequired(), Email(message=None), Length(min=6, max=40)])
+    confirm_email = StringField(
+        'Confirm Email',
+        validators=[
+            DataRequired(), 
+            Email(message=None), 
+            Length(min=6, max=40),
+            EqualTo('email', message='Make sure your primary email entries match')
+        ]
+    )
+    secondary_email = StringField(
+        'Secondary Email',
+        validators=[DataRequired(), Email(message=None), Length(min=6, max=40)])
+    confirm_secondary_email = StringField(
+        'Confirm Secondary Email',
+        validators=[
+            DataRequired(), 
+            Email(message=None), 
+            Length(min=6, max=40),
+            EqualTo('email', message='Make sure your secondary email entries match')
+        ]
+    )
+    password = PasswordField(
+        'Password',
+        validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    confirm_password = PasswordField(
+        'Repeat Password',
+        validators=[
+            DataRequired(),
+            EqualTo('password', message='Passwords must match.')
+        ]
+    )
+    phone_number = StringField(
+        'Phone Number',
+        validators=[
+            # DataRequired(), optional but strongly suggested 
+            # Email(message=None), 
+            Length(min=10, max=11),
+        ]
+    )
+
+    def validate(self):
+        initial_validation = super(RegisterTeacherForm, self).validate()
+        if not initial_validation:
+            return False
+        user = User.query.filter_by(email=self.email.data).first()
+        if user:
+            self.email.errors.append("Email already registered")
+            return False
+        return True
+
+class RegisterClassroom(FlaskForm):
+    name = StringField(
+        "Name", 
+        validators=[DataRequired(), Length(max=40)]
+    )
+    school_district = StringField(
+        'School District',
+        validators=[]
+    )
+    city = StringField(
+        'City',
+        validators=[]
+    )
+    state = SelectField(
+        'State',
+        choices=STATES,
+        validators=[]
+    )
+    country = SelectField(
+        'Country',
+        choices=["US", "CA"],
+        validators=[]
+    )
+    time_zone = SelectField(
+        "Timezone", 
+        choices=pytz.all_timezones_set, 
+        validators=[]
+    )
+    monday_start_time = DateTimeField(
+        "Monday Start Time", 
+        format="%H:%M"
+    )
+    scientist_preferred_type = SelectField(
+        "Preferred Scientist Type", 
+        choices = ["cool ones"], #TODO: Query the db to pull out all available types of scientsists from those that have signed up
+    )
+
+class ChangePasswordForm(FlaskForm):
+    password = PasswordField(
+        'password',
+        validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    confirm = PasswordField(
+        'Repeat password',
+        validators=[
+            DataRequired(),
+            EqualTo('password', message='Passwords must match.')
+        ]
+    )
+

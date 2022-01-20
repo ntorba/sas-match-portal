@@ -1,0 +1,11 @@
+__pycache__
+.ipynb_checkpoints
+.env
+.vscode
+*.pyc
+.cache
+.DS_Store
+frontend/node_modules
+frontend/build
+*.db
+ACCESS_TOKEN.json
