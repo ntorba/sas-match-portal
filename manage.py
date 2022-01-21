@@ -24,22 +24,25 @@ def seed_db():
         ),
         User(
             role="Teacher",
-            name="fakie teacher",
-            email = "hello@hello.com",
+            name="Mr. Joe",
+            email = "mrjoe@mrjoe.com",
             password = "fakies",
             admin=False
         ),
         User(
             role="Scientist",
             name="fakie scientist",
-            email = "science@hello.com",
+            email = "science@science.com",
             password = "fakies",
             admin=False
         )
     ]
+    for user in users:
+        db.session.add(user)
+    db.session.commit()
     classrooms = [
         ClassRoom(
-            user_id=1,
+            user_id=users[1].id,
             name="first classroom",
             school_district="the district",
             city="Philadelphia",
@@ -50,8 +53,6 @@ def seed_db():
             scientist_preferred_type="cool ones"
         )
     ]
-    for user in users:
-        db.session.add(user)
     for classroom in classrooms:
         db.session.add(classroom)
     db.session.commit()

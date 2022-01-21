@@ -4,24 +4,9 @@ from markupsafe import Markup
 
 from ..models import User, ClassRoom
 from ..extensions import bcrypt, db
-from .forms import LoginForm, ChangePasswordForm, RegisterTeacherForm, RegisterClassroom
+from .forms import LoginForm, ChangePasswordForm, RegisterClassroom, RegisterUserForm
 
 main_blueprint = Blueprint('main', __name__, template_folder="templates")
-
-class Component:
-    def __init__(self, placeholder, attribute):
-        self.placeholder = placeholder
-        self. attribute = attribute
-
-    def create_input_component(self):
-        # html = [f"<p><b>{placeholder}</b></p>"]
-        # html.append(f'{{{{ form.{attribute}(class="teacher-register-input", placeholder="{placeholder}") }}}}')
-        html = f'{{{{ form.{self.attribute}(class="teacher-register-input", placeholder="{self.placeholder}") }}}}'
-        return Markup("".join(html))
-
-def create_error_component(placeholder, attribute):
-    component = '<span class="error text-red-500">{{% if form.{attribute}.errors %}}{{% for error in form.{attribute}.errors %}}{{{{ error }}}}{{% endfor %}}{{% endif %\}}</span>'
-    return Markup(component)
 
 @main_blueprint.route("/")
 def index():
@@ -32,20 +17,17 @@ def index():
 @main_blueprint.route("/home")
 @login_required
 def home():
-    return render_template("home.html")
+    classrooms = None 
+    events = []
+    if current_user.role == "Teacher":
+        classrooms = ClassRoom.query.filter(ClassRoom.user_id == current_user.id).all()
+    return render_template("home.html", classrooms=classrooms, events = events)
 
-@main_blueprint.route('/register', methods=['GET'])
+@main_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html')
-
-@main_blueprint.route('/register-role/<role>', methods=['GET'])
-def register_role(role):
-    form = RegisterTeacherForm(request.form)
-    return render_template("register-turbo-frame.html", role=role, form=form)
-
-@main_blueprint.route('/register-teacher', methods=['GET', 'POST'])
-def register_teacher():
-    form = RegisterTeacherForm(request.form)
+    form = RegisterUserForm(request.form)
+    if request.method == 'GET':
+        return render_template('register.html', form=form)
     if form.validate_on_submit():
         user = User(
             role=form.role.data,
@@ -60,12 +42,16 @@ def register_teacher():
         flash('You registered and are now logged in. Welcome!', 'success')
 
         return redirect(url_for('main.home'))
-
+    else: 
+        return render_template('register.html', form=form, role=request.form.get("role"))
+    
+@main_blueprint.route("/register/<role>")
+def register_form(role):
+    form = RegisterUserForm(request.form)
     return render_template(
-        'register-teacher.html', 
+        'register-form.html', 
         form=form, 
-        Component=Component, 
-        create_error_component=create_error_component
+        role=role,
     )
 
 @main_blueprint.route("/login",methods=['GET', 'POST'])
@@ -94,11 +80,7 @@ def logout():
 @main_blueprint.route('/profile')
 @login_required
 def profile():
-    if current_user.role == "Teacher":
-        classrooms = ClassRoom.query.filter(ClassRoom.user_id == current_user.id).all()
-        return render_template("teacher-profile.html", classrooms=classrooms)
-    else:
-        return render_template("main.home")
+    return render_template("profile.html")
 
 @main_blueprint.route('/register-classroom', methods=["GET", "POST"])
 @login_required

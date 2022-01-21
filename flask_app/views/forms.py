@@ -17,14 +17,14 @@ class LoginForm(FlaskForm):
 with open(Path(__file__).parent.parent / "states.txt", "r") as f:
     STATES = [i.strip("\n") for i in f.readlines()]
 
-class RegisterTeacherForm(FlaskForm):
-    # role=SelectField(
-    #     "Your Role (Teacher or Scientist)",
-    #     choices = [
-    #         "Teacher", 
-    #         "Scientist"
-    #     ]
-    # )
+class RegisterUserForm(FlaskForm):
+    role=SelectField(
+        "Your Role (Teacher or Scientist)",
+        choices = [
+            "Teacher", 
+            "Scientist"
+        ]
+    )
     name=StringField(
         'Name',
         validators=[DataRequired(), Length(max=40)], 
@@ -50,7 +50,7 @@ class RegisterTeacherForm(FlaskForm):
             DataRequired(), 
             Email(message=None), 
             Length(min=6, max=40),
-            EqualTo('email', message='Make sure your secondary email entries match')
+            EqualTo('secondary_email', message='Make sure your secondary email entries match')
         ]
     )
     password = PasswordField(
@@ -74,7 +74,7 @@ class RegisterTeacherForm(FlaskForm):
     )
 
     def validate(self):
-        initial_validation = super(RegisterTeacherForm, self).validate()
+        initial_validation = super(RegisterUserForm, self).validate()
         if not initial_validation:
             return False
         user = User.query.filter_by(email=self.email.data).first()

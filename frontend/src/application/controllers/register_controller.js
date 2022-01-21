@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 console.log("at least I'm in the file");
 
 export default class extends Controller {
-    static targets = ["submit"];
+    static targets = ["submit", "submitTwo", "form"];
 
     connect() {
         console.log("CONNECTING Registration CONTROLLER....");
@@ -23,5 +23,19 @@ export default class extends Controller {
         console.log("here is submitTarget:");
         console.log(this.submitTarget);
         this.submitTarget.click();
+    }
+
+    radioRegisterTeacher() {
+        var actionComponents = this.formTarget.action.split("/");
+        actionComponents[actionComponents.length - 1] = "teacher";
+        this.formTarget.action = actionComponents.join("/");
+        this.submitTwoTarget.click();
+    }
+
+    radioRegisterScientist() {
+        var actionComponents = this.formTarget.action.split("/");
+        actionComponents[actionComponents.length - 1] = "scientist";
+        this.formTarget.action = actionComponents.join("/");
+        this.submitTwoTarget.click();
     }
 }
