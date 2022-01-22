@@ -25,10 +25,6 @@ class RegisterUserForm(FlaskForm):
             "Scientist"
         ]
     )
-    name=StringField(
-        'Name',
-        validators=[DataRequired(), Length(max=40)], 
-    )
     email = StringField(
         'Email',
         validators=[DataRequired(), Email(message=None), Length(min=6, max=40)])
@@ -41,18 +37,6 @@ class RegisterUserForm(FlaskForm):
             EqualTo('email', message='Make sure your primary email entries match')
         ]
     )
-    secondary_email = StringField(
-        'Secondary Email',
-        validators=[DataRequired(), Email(message=None), Length(min=6, max=40)])
-    confirm_secondary_email = StringField(
-        'Confirm Secondary Email',
-        validators=[
-            DataRequired(), 
-            Email(message=None), 
-            Length(min=6, max=40),
-            EqualTo('secondary_email', message='Make sure your secondary email entries match')
-        ]
-    )
     password = PasswordField(
         'Password',
         validators=[DataRequired(), Length(min=6, max=25)]
@@ -62,14 +46,6 @@ class RegisterUserForm(FlaskForm):
         validators=[
             DataRequired(),
             EqualTo('password', message='Passwords must match.')
-        ]
-    )
-    phone_number = StringField(
-        'Phone Number',
-        validators=[
-            # DataRequired(), optional but strongly suggested 
-            # Email(message=None), 
-            Length(min=10, max=11),
         ]
     )
 
