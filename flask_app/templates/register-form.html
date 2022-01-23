@@ -1,66 +1,65 @@
-
 <turbo-frame id="registerForm">
     {% if role %}
-        <h1 class="mb-8 text-xl text-center">{{ role.capitalize() }} Sign up</h1>
-        <form class="form-register" role="form" method="post" action="{{ url_for('main.register') }}">
-            {{ form.csrf_token }}
-            <input type="hidden" value={{ role.capitalize() }} name="role" id="role">
-            <p><b>Email</b></p>
-            {{ 
-                form.email(
-                    class="teacher-register-input",
-                    placeholder="Primary Email"
-                ) 
-            }}
+    <h1 class="mb-8 text-xl text-center">{{ role.capitalize() }} Sign up</h1>
+    <form class="form-register" role="form" method="post" action="{{ url_for('main.register') }}">
+        {{ form.csrf_token }}
+        <input type="hidden" value={{ role.capitalize() }} name="role" id="role">
+        <p><b>Email</b></p>
+        {{
+        form.email(
+        class="teacher-register-input",
+        placeholder="Primary Email"
+        )
+        }}
+        <span class="error text-red-500">
+            {% if form.email.errors %}
+            {% for error in form.email.errors %}
+            {{ error }}
+            {% endfor %}
+            {% endif %}
+        </span>
+        <p><b>Confirm Email</b></p>
+        {{
+        form.confirm_email(
+        class="teacher-register-input",
+        placeholder="Confirm Email"
+        )
+        }}
+        <span class="error text-red-500">
+            {% if form.confirm_email.errors %}
+            {% for error in form.confirm_email.errors %}
+            {{ error }}
+            {% endfor %}
+            {% endif %}
+        </span>
+        <p><b>Password</b></p>
+        {{
+        form.password(
+        class="teacher-register-input",
+        placeholder="Password"
+        )
+        }}
+        <span class="error text-red-500">
+            {% if form.password.errors %}
+            {% for error in form.email.errors %}
+            {{ error }}
+            {% endfor %}
+            {% endif %}
+        </span>
+        <p><b>Confirm Password</b></p>
+        <p class="block border border-grey-light w-full p-3 rounded mb-4">
+            {{ form.confirm_password(placeholder="Confirm Password") }}
+            <br />
             <span class="error text-red-500">
-                {% if form.email.errors %}
-                {% for error in form.email.errors %}
-                    {{ error }}
+                {% if form.confirm_password.errors %}
+                {% for error in form.confirm_password.errors %}
+                {{ error }}
                 {% endfor %}
                 {% endif %}
             </span>
-            <p><b>Confirm Email</b></p>
-            {{ 
-                form.confirm_email(
-                    class="teacher-register-input",
-                    placeholder="Confirm Email"
-                ) 
-            }}
-                <span class="error text-red-500">
-                    {% if form.confirm_email.errors %}
-                    {% for error in form.confirm_email.errors %}
-                        {{ error }}
-                    {% endfor %}
-                    {% endif %}
-                </span>
-            <p><b>Password</b></p>
-            {{ 
-                form.password(
-                    class="teacher-register-input",
-                    placeholder="Password"
-                ) 
-            }}
-                <span class="error text-red-500">
-                    {% if form.password.errors %}
-                    {% for error in form.email.errors %}
-                        {{ error }}
-                    {% endfor %}
-                    {% endif %}
-                </span>
-            <p class="block border border-grey-light w-full p-3 rounded mb-4">
-                {{ form.confirm_password(placeholder="Confirm Password") }}
-                <br/>
-                <span class="error text-red-500">
-                    {% if form.confirm_password.errors %}
-                    {% for error in form.confirm_password.errors %}
-                        {{ error }}
-                    {% endfor %}
-                    {% endif %}
-                </span>
-            </p>
-            <button
-                type="submit"
-                class="w-full text-center py-3 rounded bg-green-300 text-black hover:bg-green-600 focus:outline-none my-1"
-            >Create Account</button>
-    {% endif %}
+        </p>
+        <button type="submit"
+            class="w-full text-center py-3 rounded bg-green-300 text-black hover:bg-green-600 focus:outline-none my-1">Create
+            Account</button>
+        {% endif %}
 </turbo-frame>
