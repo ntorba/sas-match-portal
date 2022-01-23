@@ -2,37 +2,35 @@
 # originall taken from https://github.com/mjhea0/flask-basic-registration/blob/master/project/models.py
 
 import datetime
-from turtle import circle
+import enum
+from sqlalchemy import Integer, Enum
 
 from .extensions import db, bcrypt
 
-# class Parent(Base):
-#     __tablename__ = 'parent'
-#     id = Column(Integer, primary_key=True)
-#     child_id = Column(Integer, ForeignKey('child.id'))
-#     child = relationship("Child", back_populates="parents")
 
-# class Child(Base):
-#     __tablename__ = 'child'
-#     id = Column(Integer, primary_key=True)
-#     parents = relationship("Parent", back_populates="child")
+class Role(enum.Enum):
+    group_leader = 1
+    scientist = 2
+    admin = 3
+
 
 class User(db.Model):
 
     # __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    role = db.Column(db.String, nullable=False)
-    name = db.Column(db.String, nullable=False)
+    role = db.Column(db.Enum(Role), nullable=False)
+    name = db.Column(db.String, nullable=True)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
     admin = db.Column(db.Boolean, nullable=False, default=False)
-    classroom = db.relationship("ClassRoom", back_populates="user") # THIS IS A LIST, CAN HAVE MULTIPLE
+    group = db.relationship(
+        "Group", back_populates="user"
+    )  # StringTHIS IS A LIST, CAN HAVE MULTIPLE
 
-    def __init__(self, role, name, email, password, paid=False, admin=False):
+    def __init__(self, role, email, password, admin=False):
         self.role = role
-        self.name = name
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
         self.registered_on = datetime.datetime.now()
@@ -52,14 +50,15 @@ class User(db.Model):
         return self.id
 
     def __repr__(self):
-        return '<email {}'.format(self.email)
+        return "<email {}".format(self.email)
 
-class ClassRoom(db.Model):
-    __tablename__ = "classroom"
+
+class Group(db.Model):
+    __tablename__ = "group"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User", back_populates="classroom")
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", back_populates="group")
     name = db.Column(db.String, unique=True, nullable=False)
     school_district = db.Column(db.String, unique=True, nullable=False)
     city = db.Column(db.String, nullable=False)
@@ -70,12 +69,24 @@ class ClassRoom(db.Model):
     scientist_preferred_type = db.Column(db.String, nullable=True)
     registered_on = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, user_id, name, school_district, city, state, country, time_zone, monday_start_time, scientist_preferred_type, **kwargs):
+    def __init__(
+        self,
+        user_id,
+        name,
+        school_district,
+        city,
+        state,
+        country,
+        time_zone,
+        monday_start_time,
+        scientist_preferred_type,
+        **kwargs
+    ):
         self.user_id = user_id
         self.name = name
         self.school_district = school_district
         self.city = city
-        self.state = state 
+        self.state = state
         self.country = country
         self.time_zone = time_zone
         self.monday_start_time = monday_start_time

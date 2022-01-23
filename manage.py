@@ -1,7 +1,7 @@
 from flask.cli import FlaskGroup
 
 from flask_app.app import create_app, db 
-from flask_app.models import ClassRoom, User 
+from flask_app.models import Group, User 
 
 cli = FlaskGroup(create_app=create_app)
 
@@ -41,7 +41,7 @@ def seed_db():
         db.session.add(user)
     db.session.commit()
     classrooms = [
-        ClassRoom(
+        Group(
             user_id=users[1].id,
             name="first classroom",
             school_district="the district",

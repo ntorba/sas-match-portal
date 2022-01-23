@@ -11,42 +11,39 @@ from ..models import User
 
 
 class LoginForm(FlaskForm):
-    email = StringField('email', validators=[DataRequired(), Email()])
-    password = PasswordField('password', validators=[DataRequired()])
+    email = StringField("email", validators=[DataRequired(), Email()])
+    password = PasswordField("password", validators=[DataRequired()])
+
 
 with open(Path(__file__).parent.parent / "states.txt", "r") as f:
     STATES = [i.strip("\n") for i in f.readlines()]
 
+
 class RegisterUserForm(FlaskForm):
-    role=SelectField(
-        "Your Role (Teacher or Scientist)",
-        choices = [
-            "Teacher", 
-            "Scientist"
-        ]
+    role = SelectField(
+        "Your Role (Group Leader or Scientist)", choices=["group_leader", "scientist"]
     )
     email = StringField(
-        'Email',
-        validators=[DataRequired(), Email(message=None), Length(min=6, max=40)])
+        "Email", validators=[DataRequired(), Email(message=None), Length(min=6, max=40)]
+    )
     confirm_email = StringField(
-        'Confirm Email',
-        validators=[
-            DataRequired(), 
-            Email(message=None), 
-            Length(min=6, max=40),
-            EqualTo('email', message='Make sure your primary email entries match')
-        ]
-    )
-    password = PasswordField(
-        'Password',
-        validators=[DataRequired(), Length(min=6, max=25)]
-    )
-    confirm_password = PasswordField(
-        'Repeat Password',
+        "Confirm Email",
         validators=[
             DataRequired(),
-            EqualTo('password', message='Passwords must match.')
-        ]
+            Email(message=None),
+            Length(min=6, max=40),
+            EqualTo("email", message="Make sure your primary email entries match"),
+        ],
+    )
+    password = PasswordField(
+        "Password", validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    confirm_password = PasswordField(
+        "Repeat Password",
+        validators=[
+            DataRequired(),
+            EqualTo("password", message="Passwords must match."),
+        ],
     )
 
     def validate(self):
@@ -59,53 +56,31 @@ class RegisterUserForm(FlaskForm):
             return False
         return True
 
+
 class RegisterClassroom(FlaskForm):
-    name = StringField(
-        "Name", 
-        validators=[DataRequired(), Length(max=40)]
-    )
-    school_district = StringField(
-        'School District',
-        validators=[]
-    )
-    city = StringField(
-        'City',
-        validators=[]
-    )
-    state = SelectField(
-        'State',
-        choices=STATES,
-        validators=[]
-    )
-    country = SelectField(
-        'Country',
-        choices=["US", "CA"],
-        validators=[]
-    )
-    time_zone = SelectField(
-        "Timezone", 
-        choices=pytz.all_timezones_set, 
-        validators=[]
-    )
-    monday_start_time = DateTimeField(
-        "Monday Start Time", 
-        format="%H:%M"
-    )
+    name = StringField("Name", validators=[DataRequired(), Length(max=40)])
+    school_district = StringField("School District", validators=[])
+    city = StringField("City", validators=[])
+    state = SelectField("State", choices=STATES, validators=[])
+    country = SelectField("Country", choices=["US", "CA"], validators=[])
+    time_zone = SelectField("Timezone", choices=pytz.all_timezones_set, validators=[])
+    monday_start_time = DateTimeField("Monday Start Time", format="%H:%M")
     scientist_preferred_type = SelectField(
-        "Preferred Scientist Type", 
-        choices = ["cool ones"], #TODO: Query the db to pull out all available types of scientsists from those that have signed up
+        "Preferred Scientist Type",
+        choices=[
+            "cool ones"
+        ],  # TODO: Query the db to pull out all available types of scientsists from those that have signed up
     )
+
 
 class ChangePasswordForm(FlaskForm):
     password = PasswordField(
-        'password',
-        validators=[DataRequired(), Length(min=6, max=25)]
+        "password", validators=[DataRequired(), Length(min=6, max=25)]
     )
     confirm = PasswordField(
-        'Repeat password',
+        "Repeat password",
         validators=[
             DataRequired(),
-            EqualTo('password', message='Passwords must match.')
-        ]
+            EqualTo("password", message="Passwords must match."),
+        ],
     )
-
