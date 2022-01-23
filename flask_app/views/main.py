@@ -4,7 +4,13 @@ from markupsafe import Markup
 
 from ..models import User, Group
 from ..extensions import bcrypt, db
-from .forms import LoginForm, ChangePasswordForm, RegisterClassroom, RegisterUserForm
+from .forms import (
+    LoginForm,
+    ChangePasswordForm,
+    RegisterClassroom,
+    RegisterUserForm,
+    ForgotPasswordForm,
+)
 
 main_blueprint = Blueprint("main", __name__, template_folder="templates")
 
@@ -74,6 +80,12 @@ def login():
             return render_template("login.html", form=form)
 
     return render_template("login.html", form=form)
+
+
+@main_blueprint.route("/forgot_password", methods=["GET", "POST"])
+def forgot_password():
+    form = ForgotPasswordForm(request.form)
+    return render_template("forgot_password.html", form=form)
 
 
 @main_blueprint.route("/logout")
