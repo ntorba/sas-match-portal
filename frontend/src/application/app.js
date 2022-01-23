@@ -9,4 +9,12 @@ const context = require.context("./controllers", true, /\.js$/);
 application.load(definitionsFromContext(context));
 
 
-console.log("when the fuck does this run....?");
+var btns = document.querySelectorAll(".btn");
+for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener('click', function () {
+        console.log("SHOULD CHANGE COLOR...");
+        var currentBtn = document.querySelector(".current-tab");
+        currentBtn.className = currentBtn.className.replace(" current-tab");
+        this.className += " current-tab";
+    });
+}

@@ -1,6 +1,5 @@
 from flask import render_template, request, redirect, Blueprint, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from markupsafe import Markup
 
 from ..models import User, Group
 from ..extensions import bcrypt, db
@@ -20,6 +19,11 @@ def index():
     if current_user.is_authenticated:
         return redirect(url_for("main.home"))
     return render_template("index.html")
+
+
+@main_blueprint.route("/about/")
+def about():
+    return render_template("about.html")
 
 
 @main_blueprint.route("/home")
@@ -84,6 +88,7 @@ def login():
 
 @main_blueprint.route("/forgot_password", methods=["GET", "POST"])
 def forgot_password():
+    # TODO: Actually send emails by Follow https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-x-email-support
     form = ForgotPasswordForm(request.form)
     return render_template("forgot_password.html", form=form)
 
