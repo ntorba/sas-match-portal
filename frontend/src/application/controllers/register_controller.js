@@ -27,7 +27,7 @@ export default class extends Controller {
 
     radioRegisterTeacher() {
         var actionComponents = this.formTarget.action.split("/");
-        actionComponents[actionComponents.length - 1] = "teacher";
+        actionComponents[actionComponents.length - 1] = "group_leader";
         this.formTarget.action = actionComponents.join("/");
         this.submitTwoTarget.click();
     }
