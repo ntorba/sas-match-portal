@@ -1,4 +1,4 @@
-<turbo-frame id="registerForm">
+<turbo-frame id="registerForm" target="_top">
     {% if role %}
     <h1 class="mb-8 text-xl text-center">{{ role.capitalize() }} Sign up</h1>
     <form class="form-register" role="form" method="post" action="{{ url_for('main.register') }}">
