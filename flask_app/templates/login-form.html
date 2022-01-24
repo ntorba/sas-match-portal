@@ -1,0 +1,35 @@
+<turbo-frame id="registerForm" target="_top">
+    <form role="form" method="post" action="{{ url_for('auth.login') }}">
+        {{ form.csrf_token }}
+        <p><b>Email</b></p>
+        {{
+        form.email(
+        class="teacher-register-input",
+        placeholder="Email"
+        )
+        }}
+        <span class="error text-red-500">
+            {% if form.email.errors %}
+            {% for error in form.email.errors %}
+            {{ error }}
+            {% endfor %}
+            {% endif %}
+        </span>
+        <p><b>Password</b></p>
+        {{
+        form.password(
+        class="teacher-register-input",
+        placeholder="Password"
+        )
+        }}
+        <span class="error text-red-500">
+            {% if form.password.errors %}
+            {% for error in form.password.errors %}
+            {{ error }}
+            {% endfor %}
+            {% endif %}
+        </span>
+        <button type="submit"
+            class="w-full text-center py-3 rounded bg-green-300 text-black hover:bg-green-600 focus:outline-none my-1">Login</button>
+    </form>
+</turbo-frame>
