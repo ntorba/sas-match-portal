@@ -32,9 +32,17 @@ def register():
 
         return redirect(url_for("main.home"))
     else:
-        return render_template(
-            "register.html", form=form, role=request.form.get("role")
-        )
+        all_errors = []
+        for field, errors in form.errors.items():
+            # errors = getattr(form, field).errors
+            all_errors.extend(errors)
+            turbo.push(
+                turbo.update(
+                    render_template("form-errors.html", errors=errors),
+                    f"register-{field}-errors",
+                )
+            )
+        return ", ".join(all_errors), 200
 
 
 @auth_blueprint.route("/register/<role>")
@@ -56,22 +64,20 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         login_user(user)
         flash("You've successfully logged in.")
-        return redirect(url_for("main.home")), 303
+        return redirect(url_for("main.home"))
     elif request.method == "POST":
         # flash("Invalid email and/or password.", "danger")
-
-        if form.email.errors:
-            msg = ""
-            for error in form.email.errors:
-                msg += f'<p class="text-red-500">{error}</p>'
-            turbo.push(turbo.update(msg, "login-email-errors"))
-            return "update your shit", 400
-        if form.password.errors:
-            msg = ""
-            for error in form.password.errors:
-                msg += f'<p class="text-red-500">{error}</p>'
-            turbo.push(turbo.update(msg, "login-password-errors"))
-            return "update your shit", 200
+        all_errors = []
+        for field, errors in form.errors.items():
+            # errors = getattr(form, field).errors
+            all_errors.extend(errors)
+            turbo.push(
+                turbo.update(
+                    render_template("form-errors.html", errors=errors),
+                    f"login-{field}-errors",
+                )
+            )
+        return ", ".join(errors), 200
 
 
 @auth_blueprint.route("/forgot_password", methods=["GET", "POST"])
