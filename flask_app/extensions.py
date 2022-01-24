@@ -7,18 +7,20 @@ from flask_login import LoginManager, current_user
 from flask_admin import Admin, AdminIndexView
 from turbo_flask import Turbo
 
+
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
         if current_user.is_authenticated and current_user.admin:
-            return True 
-        else: 
+            return True
+        else:
             return False
 
     def inaccessible_callback(self, name, **kwargs):
-        return redirect(url_for("main.login"))
+        return redirect(url_for("auth.login"))
+
 
 db = SQLAlchemy()
-cors = CORS() 
+cors = CORS()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 admin = Admin(index_view=MyAdminIndexView())
