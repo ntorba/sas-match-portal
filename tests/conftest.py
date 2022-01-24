@@ -10,8 +10,6 @@ from flask_app.extensions import db as _db
 
 from flask_sqlalchemy import SQLAlchemy
 
-# _db = SQLAlchemy()
-
 
 TESTDB = "test_app.db"
 TESTDB_PATH = "db/{}".format(TESTDB)
