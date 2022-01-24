@@ -5,42 +5,9 @@
     <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-start px-2">
         <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full border-2 border-slate-50">
             <h1 class="mb-8 text-3xl text-center">Login</h1>
-            <form class="form-register" role="form" method="post" action="{{ url_for('main.login') }}">
-                {{ form.csrf_token }}
-                <p><b>Email</b></p>
-                {{
-                form.email(
-                class="teacher-register-input",
-                placeholder="Email"
-                )
-                }}
-                <span class="error text-red-500">
-                    {% if form.email.errors %}
-                    {% for error in form.email.errors %}
-                    {{ error }}
-                    {% endfor %}
-                    {% endif %}
-                </span>
-                <p><b>Password</b></p>
-                {{
-                form.password(
-                class="teacher-register-input",
-                placeholder="Password"
-                )
-                }}
-                <span class="error text-red-500">
-                    {% if form.password.errors %}
-                    {% for error in form.email.errors %}
-                    {{ error }}
-                    {% endfor %}
-                    {% endif %}
-                </span>
-                <button type="submit"
-                    class="w-full text-center py-3 rounded bg-green-300 text-black hover:bg-green-600 focus:outline-none my-1">Login</button>
-            </form>
-
+            {% include "login-form.html" %}
             <div class="text-center">
-                <a class="text-blue-400 content-center" href="{{url_for('main.forgot_password')}}">Forgot
+                <a class="text-blue-400 content-center" href="{{url_for('auth.forgot_password')}}">Forgot
                     Password?</a>
             </div>
             <div class="text-center text-sm text-grey-dark mt-4">
@@ -56,7 +23,7 @@
 
         <div class="text-grey-dark mt-6">
             Need to sign up?
-            <a class="no-underline border-b border-blue text-blue" href="{{ url_for('main.register') }}">
+            <a class="no-underline border-b border-blue text-blue" href="{{ url_for('auth.register') }}">
                 Register Here
             </a>.
         </div>

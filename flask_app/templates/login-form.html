@@ -2,6 +2,7 @@
     <form role="form" method="post" action="{{ url_for('auth.login') }}">
         {{ form.csrf_token }}
         <p><b>Email</b></p>
+        <turbo-frame id="login-email-errors"></turbo-frame>
         {{
         form.email(
         class="teacher-register-input",
@@ -16,6 +17,7 @@
             {% endif %}
         </span>
         <p><b>Password</b></p>
+        <turbo-frame id="login-password-errors"></turbo-frame>
         {{
         form.password(
         class="teacher-register-input",
