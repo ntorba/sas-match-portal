@@ -1,14 +1,16 @@
 <!-- Navigation, originally from https://flowbite.com/docs/components/navbar/-->
 
-{% set always_navigation_bar = [
+{% set logged_out_navigation_bar = [
 ('/', 'home', 'Home'),
 ('/about/', 'about', 'About'),
 ('/contact/', 'contact', 'Contact'),
+('/login', 'login', 'Login')
 ] -%}
 
 {% set logged_in_navigation_bar = [
 ('/matches', 'matches', 'Matches'),
-('/profile', 'profile', 'Profile')
+('/profile', 'profile', 'Profile'),
+('/logout', 'logout', 'Logout')
 ] %}
 
 {% set active_page = active_page|default('home') -%}
