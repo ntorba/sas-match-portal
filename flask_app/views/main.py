@@ -4,11 +4,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from ..models import User, Group
 from ..extensions import bcrypt, db
 from .forms import (
-    LoginForm,
     ChangePasswordForm,
-    RegisterClassroom,
-    RegisterUserForm,
-    ForgotPasswordForm,
 )
 
 main_blueprint = Blueprint("main", __name__, template_folder="templates")
@@ -40,28 +36,6 @@ def home():
 @login_required
 def profile():
     return render_template("profile.html")
-
-
-@main_blueprint.route("/register-classroom", methods=["GET", "POST"])
-@login_required
-def register_classroom():
-    form = RegisterClassroom(request.form)
-    last_class = Group.query.first()
-    if form.validate_on_submit():
-        ## TODO: Think of check for repeat classrooms
-        user = User.query.filter_by(email=current_user.email).first()
-        classroom = Group(user_id=user.id, **form.data)
-        db.session.add(classroom)
-        db.session.commit()
-        flash(f"Successfully added classroom {form.name.data}!", "success")
-        return redirect(url_for("main.profile"))
-    return render_template("register-classroom.html", form=form)
-
-
-@main_blueprint.route("/classroom/<classroomid>", methods=["GET", "POST"])
-@login_required
-def classroom(classroomid):
-    return "fuuuuck"
 
 
 @main_blueprint.route("/profile_update", methods=["GET", "POST"])
