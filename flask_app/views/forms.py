@@ -1,6 +1,5 @@
 # project/user/forms.py
 # originally taken from https://github.com/mjhea0/flask-basic-registration/blob/master/project/user/forms.py
-
 from pathlib import Path
 import pytz
 from flask_wtf import FlaskForm
@@ -8,11 +7,27 @@ from wtforms import StringField, PasswordField, SelectField, DateTimeField
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 
 from ..models import User
+from ..extensions import bcrypt
 
 
 class LoginForm(FlaskForm):
     email = StringField("email", validators=[DataRequired(), Email()])
     password = PasswordField("password", validators=[DataRequired()])
+
+    def validate(self):
+        initial_validation = super(LoginForm, self).validate()
+        if not initial_validation:
+            return False
+        user = User.query.filter_by(email=self.email.data).first()
+        if user is None:
+            self.email.errors.append("This email is not found in our records")
+            return False
+        else:
+            if user and bcrypt.check_password_hash(user.password, self.password.data):
+                return True
+            else:
+                self.password.errors.append("This password does not match email.")
+                return False
 
 
 with open(Path(__file__).parent.parent / "states.txt", "r") as f:
@@ -32,7 +47,7 @@ class RegisterUserForm(FlaskForm):
             DataRequired(),
             Email(message=None),
             Length(min=6, max=40),
-            EqualTo("email", message="Make sure your primary email entries match"),
+            EqualTo("email", message="Make sure your email entries match"),
         ],
     )
     password = PasswordField(
