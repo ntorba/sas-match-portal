@@ -78,7 +78,7 @@ class ForgotPasswordForm(FlaskForm):
     )
 
 
-class RegisterClassroom(FlaskForm):
+class RegisterGroup(FlaskForm):
     name = StringField("Name", validators=[DataRequired(), Length(max=40)])
     school_district = StringField("School District", validators=[])
     city = StringField("City", validators=[])
