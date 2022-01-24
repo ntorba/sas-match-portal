@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).parent.parent
 
 
 ## Do flask login setup: https://flask-login.readthedocs.io/en/latest/#how-it-works
-login_manager.login_view = "main.login"
+login_manager.login_view = "auth.login"
 login_manager.login_message_category = "danger"
 
 
@@ -29,7 +29,7 @@ class MyModelView(ModelView):
 
     def inaccessible_callback(self, name, **kwargs):
         flash(f"You must log in to get access to {name}")
-        return redirect(url_for("main.login"))  # TODO flash something more useful...
+        return redirect(url_for("auth.login"))  # TODO flash something more useful...
 
 
 def create_app(deploy_mode="Development", settings_override={}):
@@ -68,11 +68,10 @@ def create_app(deploy_mode="Development", settings_override={}):
     from webpack_boilerplate.config import setup_jinja2_ext
 
     setup_jinja2_ext(app)
-    from .views import main_blueprint
+    from .views import main_blueprint, auth_blueprint
 
     app.register_blueprint(main_blueprint)
-    # from .views import party_blueprint
-    # app.register_blueprint(party_blueprint)
+    app.register_blueprint(auth_blueprint)
 
     @app.cli.command("webpack_init")
     def webpack_init():
