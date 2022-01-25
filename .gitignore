@@ -10,3 +10,4 @@ frontend/build
 *.db
 ACCESS_TOKEN.json
 *.code-workspace
+.coverage
