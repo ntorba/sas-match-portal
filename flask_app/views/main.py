@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, Blueprint, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 
-from ..models import User, Group
+from ..models import User, Match
 from ..extensions import bcrypt, db
 from .forms import (
     ChangePasswordForm,
@@ -28,7 +28,7 @@ def home():
     classrooms = None
     events = []
     if current_user.role == "Teacher":
-        classrooms = Group.query.filter(Group.user_id == current_user.id).all()
+        classrooms = Match.query.filter(Match.leader_id == current_user.id).all()
     return render_template("home.html", classrooms=classrooms, events=events)
 
 

@@ -25,9 +25,9 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
     admin = db.Column(db.Boolean, nullable=False, default=False)
-    group = db.relationship(
-        "Group", back_populates="user"
-    )  # StringTHIS IS A LIST, CAN HAVE MULTIPLE
+    # match = db.relationship(
+    #     "Match", back_populates="user"
+    # )  # String THIS IS A LIST, CAN HAVE MULTIPLE
 
     def __init__(self, role, email, password, admin=False):
         self.role = role
@@ -53,8 +53,8 @@ class User(db.Model):
         return "<email {}".format(self.email)
 
 
-class Group(db.Model):
-    __tablename__ = "group"
+class Match(db.Model):
+    __tablename__ = "match"
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
