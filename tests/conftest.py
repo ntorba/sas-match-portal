@@ -4,11 +4,10 @@ conftest from http://alexmic.net/flask-sqlalchemy-pytest/ which is a great post 
 import os
 import pytest
 
+from flask_app.extensions import login_manager
 from flask_app.app import create_app
-
 from flask_app.extensions import db as _db
-
-from flask_sqlalchemy import SQLAlchemy
+from flask_app.models import User
 
 
 TESTDB = "test_app.db"
@@ -33,7 +32,7 @@ def app(request):
     return app
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def client(app):
     """A test client for the app."""
     return app.test_client()
@@ -74,3 +73,10 @@ def session(db, request):
 
     request.addfinalizer(teardown)
     return session
+
+
+@pytest.fixture()
+def test_with_authenticated_user(app):
+    @login_manager.request_loader
+    def load_user_from_request(request):
+        return User.query.first()
