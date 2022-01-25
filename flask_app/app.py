@@ -6,7 +6,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 
 from .extensions import db, cors, bcrypt, login_manager, admin, turbo
-from .models import User, Group
+from .models import User, Match
 
 BASE_DIR = Path(__file__).parent.parent
 
@@ -63,7 +63,7 @@ def create_app(deploy_mode="Development", settings_override={}):
     turbo.init_app(app)
 
     admin.add_view(MyModelView(User, db.session))
-    admin.add_view(MyModelView(Group, db.session))
+    admin.add_view(MyModelView(Match, db.session))
 
     from webpack_boilerplate.config import setup_jinja2_ext
 
