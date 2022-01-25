@@ -57,8 +57,17 @@ class Match(db.Model):
     __tablename__ = "match"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    user = db.relationship("User", back_populates="group")
+
+    leader_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    scientist_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
+    leader = db.relationship("User", foreign_keys=[leader_id])
+    scientist = db.relationship("User", foreign_keys=[scientist_id])
+
+    # leader = db.relationship("User", back_populates="match", foreign_keys=[leader_id])
+    # scientist = db.relationship(
+    #     "User", back_populates="match", foreign_keys=[scientist_id]
+    # )
+
     name = db.Column(db.String, unique=True, nullable=False)
     school_district = db.Column(db.String, unique=True, nullable=False)
     city = db.Column(db.String, nullable=False)
@@ -71,7 +80,7 @@ class Match(db.Model):
 
     def __init__(
         self,
-        user_id,
+        leader_id,
         name,
         school_district,
         city,
@@ -80,9 +89,15 @@ class Match(db.Model):
         time_zone,
         monday_start_time,
         scientist_preferred_type,
-        **kwargs
+        scientist_id=None,
+        **kwargs,
     ):
-        self.user_id = user_id
+        leader = User.query.filter(User.id == leader_id).first()
+        if leader.role.name != "group_leader":
+            raise Exception(
+                f"Matches must be created by group leaders! This user is role {leader.role.name}"
+            )
+        self.leader_id = leader_id
         self.name = name
         self.school_district = school_district
         self.city = city
@@ -91,5 +106,6 @@ class Match(db.Model):
         self.time_zone = time_zone
         self.monday_start_time = monday_start_time
         self.scientist_preferred_type = scientist_preferred_type
+        self.scientist_id = scientist_id
         self.registered_on = datetime.datetime.utcnow()
         super().__init__()
