@@ -1,29 +1,10 @@
 import re
-
-from flask_app.models import User, Group
+from flask_login import current_user
+from flask_app.models import User
 from flask_app.views.forms import RegisterUserForm, LoginForm
 from flask_app.extensions import db
 
-
-def login(client, email, password):
-    return client.post(
-        "/login", data=dict(email=email, password=password), follow_redirects=True
-    )
-
-
-def logout(client):
-    return client.get("/logout", follow_redirects=True)
-
-
-def add_user(role, email, password):
-    user = User(role=role, email=email, password=password)
-    db.session.add(user)
-    db.session.commit()
-    return user
-
-
-def add_group():
-    pass
+from utils import add_user, login, logout
 
 
 def test_index(client):
@@ -37,18 +18,21 @@ def test_registered_user_login(client, session):
     role = "scientist"
     email = "test_scientist@science.com"
     password = "fake_password"
-    scientist = add_user(role, email, password)
 
+    add_user(role, email, password)
     login_res = login(client, email, password)
+
     assert (
         login_res.status_code == 200
     ), "expected 200 status code for login response"  # TODO: I Guess it changes this from 302 to 200 internally, not sure why?
+    assert (
+        login_res.get_data(as_text=True) != "This email is not found in our records"
+    ), "you got an error message..."  # TODO: I need a better way to know if there were errors... see if I can make those codes not 200's
 
     home_res = client.get("/home")
     assert (
         home_res.status_code == 200
     ), f"expected status_code 200 for logged in users accessing /home, but got {home_res.status_code}"
-
     logout_res = logout(client)
     assert logout_res.status_code == 200, "Logout status code should have returned 200"
 
