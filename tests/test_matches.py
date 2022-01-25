@@ -1,15 +1,13 @@
 from flask_login import current_user
 from flask_app.views.forms import RegisterMatchForm
-from flask_app.models import User, Group
-from utils import add_user, login, logout
+from flask_app.models import User, Match
+from utils import add_user, login, logout, add_match
 
-def add_match():
-    pass
 
 def test_create_match(client, session, test_with_authenticated_user):
     assert client.get("/login").status_code == 200
 
-    role = "scientist"
+    role = "group_leader"
     email = "create_match@create_match.com"
     password = "fake_password"
 
@@ -31,8 +29,44 @@ def test_create_match(client, session, test_with_authenticated_user):
         create_group_res.status_code == 201
     ), f"expected status_code 201 for creating group, but got {create_group_res.status_code}. Available errors: {create_group_res.get_data(as_text=True)}"
 
-    g = Group.query.filter(Group.name == form.name.data).first()
+    g = Match.query.filter(Match.name == form.name.data).first()
     user = User.query.filter(User.email == email).first()
     assert g.id > 0
-    assert g.user_id == user.id
-    logout_res = logout(client)
+    assert g.leader_id == user.id
+    assert g.scientist_id is None, "There should be no scientist connected at this time"
+    _ = logout(client)
+
+
+def test_add_scientist_to_match(client, session, test_with_authenticated_user):
+    assert client.get("/login").status_code == 200
+
+    role = "group_leader"
+    email = "create_match@create_match.com"
+    password = "fake_password"
+
+    gl = add_user(role, email, password)
+
+    scientist = add_user("scientist", "sciencematch@sciencematch.com", "fake_password")
+
+    _ = login(client, email, password)
+
+    form = RegisterMatchForm(
+        name="testgroup1",
+        school_district="Philadelphia district",
+        city="Philadelphia",
+        state="Pennsylvania",
+        country="US",
+        time_zone="EST",
+        monday_start_time="09:00",
+        scientist_preferred_type="cool ones",
+    )
+
+    match = add_match(gl, form.data)
+
+    assert match.scientist_id is None, "should be no scientist on match at this point"
+
+    match.scientist_id = scientist.id
+
+    check_match = Match.query.filter(Match.scientist_id == scientist.id).first()
+    assert check_match.scientist_id == scientist.id
+    assert check_match.leader_id == gl.id

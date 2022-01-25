@@ -1,46 +1,43 @@
 {% extends "_base.html" %}
 {% block content %}
 
-<h1 class="text-2xl">Your Matches</h1>
+<h1 class="text-2xl">Match: {{ match.name }}</h1>
 
-{% if matches %}
 <table class="border-2 border-gray-500 border-collapse  divide-y divide-gray-800 w-full">
     <thead class="bg-black">
         <tr class="">
             <th class="px-6 text-left text-lg font-bold text-gray-500 uppercase tracking-wider">
-                Name
+                Field
             </th>
             <th class="px-6 text-left text-lg font-bold text-gray-500 uppercase tracking-wider ">
-                Scientist Type
+                Value
             </th>
-            <th class=""></th>
         </tr>
     </thead>
     <tbody class="bg-black divide-y divide-x divide-gray-800">
-        {% for match in matches %}
+        {% for key, value in match.items() %}
         <tr class="">
             <td class="px-6 py-4 text-left">
                 <div class="ml-4">
-                    <div class="text-lg font-bold text-gray-300">{{ match.name }}</div>
+                    <div class="text-lg font-bold text-gray-300">{{ key }}</div>
                 </div>
             </td>
             <td class="px-6 text-left  text-white">
-                <p class="text-white"> {{ match.scientist_preferred_type }}</p>
+                <p class="text-white"> {{ value }}</p>
             </td>
             <td class="px-6 ">
                 <div data-controller="vote">
                     <a href="{{ url_for('matches.match_page', matchid=match.id) }}"
-                        class="bg-green-800 text-green-100 hover:bg-green-400 rounded px-2 py-2">Edit
-                        Match</a>
+                        class="bg-green-800 text-green-100 hover:bg-green-400 rounded px-2 py-2">TODO: Make these fields
+                        editable</a>
                 </div>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-{% else %}
-<a href="{{ url_for('matches.register_match') }}" class="bg-yellow-200"> Request First Match! </a>
-{% endif %}
+
+<a href="{{ url_for('matches.matches') }}" class="bg-yellow-200"> Go back to Matches Page </a>
 
 {% endblock %}
 

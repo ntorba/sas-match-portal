@@ -1,4 +1,4 @@
-from flask_app.models import User
+from flask_app.models import User, Match
 from flask_app.extensions import db
 
 
@@ -19,5 +19,8 @@ def add_user(role, email, password):
     return user
 
 
-def add_group():
-    pass
+def add_match(user, form_data):
+    match = Match(leader_id=user.id, **form_data)
+    db.session.add(match)
+    db.session.commit()
+    return match
