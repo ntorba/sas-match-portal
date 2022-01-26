@@ -1,0 +1,47 @@
+<turbo-frame id="registerForm" target="_top">
+    {% if role %}
+    <h1 class="mb-8 text-xl text-center">{{ role.capitalize() }} Sign up</h1>
+    <form class="form-register" role="form" method="post" action="{{ url_for('auth.register') }}">
+        {{ form.csrf_token }}
+        <input type="hidden" value={{ role }} name="role" id="role">
+        <p><b>Email</b></p>
+        <turbo-frame id="register-user-email-errors">
+        </turbo-frame>
+        {{
+        form.email(
+        class="teacher-register-input",
+        placeholder="Primary Email"
+        )
+        }}
+        <p><b>Confirm Email</b></p>
+        <turbo-frame id="register-user-confirm_email-errors">
+        </turbo-frame>
+        {{
+        form.confirm_email(
+        class="teacher-register-input",
+        placeholder="Confirm Email"
+        )
+        }}
+        <p><b>Password</b></p>
+        <turbo-frame id="register-user-password-errors">
+        </turbo-frame>
+        {{
+        form.password(
+        class="teacher-register-input",
+        placeholder="Password"
+        )
+        }}
+        <p><b>Confirm Password</b></p>
+        <turbo-frame id="register-user-confirm_password-errors">
+        </turbo-frame>
+        {{
+        form.confirm_password(
+        class="teacher-register-input",
+        placeholder="Confirm Password"
+        )
+        }}
+        <button type="submit"
+            class="w-full text-center py-3 rounded bg-green-300 text-black hover:bg-green-600 focus:outline-none my-1">Create
+            Account</button>
+        {% endif %}
+</turbo-frame>

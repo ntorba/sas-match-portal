@@ -1,0 +1,49 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="bg-grey-lighter min-h-screen flex flex-col">
+    <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-start px-2">
+        <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full border-2 border-slate-50">
+            <h1 class="mb-8 text-3xl text-center">Sign up</h1>
+            <div data-controller="register" class="pt-2 text-center relative mx-auto text-gray-600">
+                <turbo-frame id="registerFormTeacherRequest" target="registerForm">
+                    <form id="register-role-form" action="/register/role-to-be-replaced" data-register-target="form"
+                        class="py-3">
+                        <div class="block">
+                            <span class="text-gray-700">Account Type</span>
+                            <div class="mt-2">
+                                <div>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" class="form-radio" name="radio" value="teacher"
+                                            data-action="input->register#radioRegisterTeacher">
+                                        <span class="ml-2">Group Leader <span class="text-xs"> (teacher, troop leader,
+                                                etc.)</span></span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" class="form-radio" name="radio" value="scientist"
+                                            data-action="input->register#radioRegisterScientist">
+                                        <span class="ml-2">Scientist</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="hidden" data-register-target="submitTwo">
+                        </button>
+                    </form>
+                </turbo-frame>
+                {% include "register-user-form.html" %}
+            </div>
+        </div>
+
+        <div class="text-grey-dark mt-6">
+            Already have an account?
+            <a class="no-underline border-b border-blue text-blue" href="{{ url_for('auth.login') }}">
+                Log in
+            </a>.
+        </div>
+    </div>
+</div>
+
+{% endblock %}
