@@ -17,7 +17,7 @@ auth_blueprint = Blueprint("auth", __name__, template_folder="templates")
 def register():
     form = RegisterUserForm(request.form)
     if request.method == "GET":
-        return render_template("register.html", form=form)
+        return render_template("register-user.html", form=form)
     if form.validate_on_submit():
         user = User(
             role=form.role.data,
@@ -39,7 +39,7 @@ def register():
             turbo.push(
                 turbo.update(
                     render_template("form-errors.html", errors=errors),
-                    f"register-{field}-errors",
+                    f"register-users-{field}-errors",
                 )
             )
         return ", ".join(all_errors), 200
@@ -49,7 +49,7 @@ def register():
 def register_form(role):
     form = RegisterUserForm(request.form)
     return render_template(
-        "register-form.html",
+        "register-user-form.html",
         form=form,
         role=role,
     )
