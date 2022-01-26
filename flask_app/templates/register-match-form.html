@@ -1,0 +1,79 @@
+<turbo-frame id="registerForm" target="_top">
+    <h1 class="mb-8 text-xl text-center">Register Match!</h1>
+    <form class="form-register" role="form" method="post" action="{{ url_for('matches.register_match') }}">
+        {{ form.csrf_token }}
+        <p><b>Group/Class Name</b></p>
+        <turbo-frame id="register-match-name-errors"></turbo-frame>
+        {{
+        form.name(
+        class="teacher-register-input",
+        placeholder="Group/Class Name"
+        )
+        }}
+        <p><b>School District</b></p>
+        <turbo-frame id="register-match-school_district-errors">
+        </turbo-frame>
+        {{
+        form.school_district(
+        class="teacher-register-input",
+        placeholder="School District"
+        )
+        }}
+        <p><b>City</b></p>
+        <turbo-frame id="register-match-city-errors">
+        </turbo-frame>
+        {{
+        form.city(
+        class="teacher-register-input",
+        placeholder="City"
+        )
+        }}
+        <p><b>Country</b></p>
+        <turbo-frame id="register-match-country-errors">
+        </turbo-frame>
+        {{
+        form.country(
+        class="teacher-register-input",
+        placeholder="Country"
+        )
+        }}
+        <p><b>State</b></p>
+        <turbo-frame id="register-match-state-errors">
+        </turbo-frame>
+        {{
+        form.state(
+        class="teacher-register-input",
+        placeholder="State"
+        )
+        }}
+        <p><b>Time Zone</b></p>
+        <turbo-frame id="register-match-time_zone-errors">
+        </turbo-frame>
+        {{
+        form.time_zone(
+        class="teacher-register-input",
+        placeholder="Time Zone"
+        )
+        }}
+        <p><b>Monday Start Time</b></p>
+        <turbo-frame id="register-match-monday_start_time-errors">
+        </turbo-frame>
+        {{
+        form.monday_start_time(
+        class="teacher-register-input",
+        placeholder="Monday Start Time"
+        )
+        }}
+        <p><b>"Scientist Preferred Type"</b></p>
+        <turbo-frame id="register-match-scientist_preferred_type-errors">
+        </turbo-frame>
+        {{
+        form.scientist_preferred_type(
+        class="teacher-register-input",
+        placeholder="scientist_preferred_type"
+        )
+        }}
+        <button type="submit"
+            class="w-full text-center py-3 rounded bg-green-300 text-black hover:bg-green-600 focus:outline-none my-1">Request
+            Match</button>
+</turbo-frame>
