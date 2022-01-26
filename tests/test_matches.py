@@ -14,6 +14,14 @@ def test_create_match(client, session, test_with_authenticated_user):
     add_user(role, email, password)
     login_res = login(client, email, password)
 
+    assert (
+        client.get("/matches/matches").status_code == 200
+    ), "The matches page was not available"
+
+    assert (
+        client.get("/matches/register").status_code == 200
+    ), "register match page not available"
+
     form = RegisterMatchForm(
         name="testgroup1",
         school_district="Philadelphia district",
@@ -26,8 +34,12 @@ def test_create_match(client, session, test_with_authenticated_user):
     )
     create_group_res = client.post("/matches/register", data=form.data)
     assert (
-        create_group_res.status_code == 201
-    ), f"expected status_code 201 for creating group, but got {create_group_res.status_code}. Available errors: {create_group_res.get_data(as_text=True)}"
+        create_group_res.status_code == 302
+    ), f"expected status_code 302 for redirect for successfully creating group, but got {create_group_res.status_code}."
+
+    assert (
+        "http://localhost/matches/matches" == create_group_res.headers["Location"]
+    ), "registration response header did not redictrt to 'matches/matches as expected"
 
     g = Match.query.filter(Match.name == form.name.data).first()
     user = User.query.filter(User.email == email).first()
