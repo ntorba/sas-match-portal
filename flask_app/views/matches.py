@@ -23,8 +23,8 @@ def register_match():
         group = Match(leader_id=user.id, **form.data)
         db.session.add(group)
         db.session.commit()
-        flash(f"Successfully added classroom {form.name.data}!", "success")
-        return f"successfully added match {group.name}", 201
+        flash(f"Successfully added group {form.name.data}!", "success")
+        return redirect(url_for("matches.matches"))
     else:
         return f"failed to create group with errors: {form.errors}", 400
 
