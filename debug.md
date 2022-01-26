@@ -22,3 +22,7 @@ def test_with_authenticated_user(app):
 ```
 which I got from this github issue: https://github.com/pytest-dev/pytest-flask/issues/40#issuecomment-447061393
 I don't really get what's going on... but it is working for now
+
+
+## More issues with forms and turbo-streams
+I just accidentally put the Create Account button on the register match page. When this happened, I could hit create account, it would submit, I get a 200, but then the errors aren't streamed to the right place... it's a weird thing and I'm not sure how to handle it yet, especially if I can only returna  200 for that.. I might need to do some javascript stuff
