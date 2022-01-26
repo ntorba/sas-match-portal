@@ -69,7 +69,7 @@ class Match(db.Model):
     # )
 
     name = db.Column(db.String, unique=True, nullable=False)
-    school_district = db.Column(db.String, unique=True, nullable=False)
+    school_district = db.Column(db.String, nullable=False)
     city = db.Column(db.String, nullable=False)
     state = db.Column(db.String, nullable=True)
     country = db.Column(db.String, nullable=True)
