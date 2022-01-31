@@ -1,0 +1,77 @@
+<!-- .modal {
+width: 300px;
+height: 200px;
+line-height: 200px;
+position: fixed;
+top: 50%;
+left: 50%;
+margin-top: -100px;
+margin-left: -150px;
+background-color: #f1c40f;
+border-radius: 5px;
+text-align: center;
+z-index: 11; /* 1px higher than the overlay layer */
+} -->
+
+<turbo-frame id="profileUpdateForm">
+    <div
+        data-controller="updateProfile" 
+        id="profileUpdateFormDiv" 
+    >
+        <turbo-frame id="profileFormReset" target="profileUpdateForm">
+            {# <a class="text-xs text-blue-400" href="/profile/dissapear"> #}
+            <form class="form-update-profile-reset" role="form" method="get" action="{{ url_for('main.profile_deissapear') }}">
+                {# <button
+                    type="hidden"
+                    data-action="click->profileUpdate#exit"
+                > #}
+                    <div data-controller="updateProfile" 
+                        id="profileUpdateFormDiv" 
+                        class="fixed top-0 left-0 h-full w-full bg-yellow-200 bg-opacity-50 z-10 "
+                        data-action="click->updateProfile#exit"    
+                    >
+                        <div 
+                            class="fixed top-0 left-0 h-full w-full bg-yellow-200 bg-opacity-50 z-10 "
+                        >
+                            {# <div
+                                class="w-300 w-64 h-48 leading-6 fixed top-1/2 left-1/2 -mt-48 -ml-64 bg-yellow-800 rounded-md text-center z-20"> #}
+                            <div class="mt-24 flex items-center justify-center">
+                                <div class="my-auto w-1/2 bg-yellow-600 rounded-md z-20">
+                                    <h1 class="mb-8 text-xl text-center">Update Profile</h1>
+                                    <form class="form-register" role="form" method="post" action="{{ url_for('main.profile_update_form') }}">
+                                        {{ form.csrf_token }}
+                                        <div class="block bg-white border-solid border-2 border-gray-300 p-3 rounded mx-2 mb-4">
+                                            <p class="text-xs text-gray-600"><b>Name</b></p>
+                                            <turbo-frame id="profile-update-name-errors"></turbo-frame>
+                                            {{
+                                            form.name(
+                                            class="",
+                                            value="Name"
+                                            )
+                                            }}
+                                        </div>
+                                        <div class="block bg-white border-solid border-2 border-gray-300 p-3 rounded mx-2 mb-4">
+                                            <p class="text-xs text-gray-600"><b>Email</b></p>
+                                            <turbo-frame id="profile-update-email-errors">
+                                            </turbo-frame>
+                                            {{
+                                            form.name(
+                                            class="",
+                                            value="Your@email.com"
+                                            )
+                                            }}
+                                        </div>
+                                        <button type="submit"
+                                            data-action="submit->profileUpdate#"
+                                            class="w-full text-center py-3 rounded bg-green-300 text-black hover:bg-green-600 focus:outline-none my-1">
+                                            Save
+                                        </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {# </button> #}
+            </form>
+        </turbo-frame>
+    </div>
+</turbo-frame>
