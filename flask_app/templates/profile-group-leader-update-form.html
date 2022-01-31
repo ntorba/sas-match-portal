@@ -14,17 +14,18 @@ z-index: 11; /* 1px higher than the overlay layer */
 } -->
 
 <turbo-frame id="profileUpdateForm">
+    <a class="text-xs text-blue-400" href="{{ url_for('main.profile_deissapear') }}">Exit</a>
     <form class="form-update-profile-reset" role="form" method="get" action="{{ url_for('main.profile_deissapear') }}">
         <button
+            id="profileUpdateDisappearBtn"
             type="hidden"
-            data-action="click->profileUpdate#exit"
         >
             <div 
                 class="fixed top-0 left-0 h-full w-full bg-yellow-200 bg-opacity-50 z-10 "
             >
                 {# <div
                     class="w-300 w-64 h-48 leading-6 fixed top-1/2 left-1/2 -mt-48 -ml-64 bg-yellow-800 rounded-md text-center z-20"> #}
-                <div class="mt-24 flex items-center justify-center">
+                <div id="profileUpdateFormDiv" class="mt-24 flex items-center justify-center">
                     <div class="my-auto w-1/2 bg-yellow-600 rounded-md z-20">
                         <h1 class="mb-8 text-xl text-center">Update Profile</h1>
                         <form class="form-register" role="form" method="post" action="{{ url_for('main.profile_update_form') }}">
@@ -60,4 +61,6 @@ z-index: 11; /* 1px higher than the overlay layer */
             </div>
         </button>
     </form>
+    {{ javascript_pack('profileUpdateForm', attrs='charset="UTF-8"') }}
+
 </turbo-frame>
