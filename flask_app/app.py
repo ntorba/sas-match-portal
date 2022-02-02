@@ -5,6 +5,8 @@ from flask import Flask, redirect, url_for, flash
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 
+from flask_app.views import scientists
+
 from .extensions import db, cors, bcrypt, login_manager, admin, turbo
 from .models import User, Match
 
@@ -68,11 +70,17 @@ def create_app(deploy_mode="Development", settings_override={}):
     from webpack_boilerplate.config import setup_jinja2_ext
 
     setup_jinja2_ext(app)
-    from .views import main_blueprint, auth_blueprint, matches_blueprint
+    from .views import (
+        main_blueprint,
+        auth_blueprint,
+        matches_blueprint,
+        scientists_blueprint,
+    )
 
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(matches_blueprint)
+    app.register_blueprint(scientists_blueprint)
 
     @app.cli.command("webpack_init")
     def webpack_init():

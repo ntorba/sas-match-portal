@@ -1,0 +1,48 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="mt-3">
+    <h2>Search for an available scientist</h2><br>
+</div>
+<table id="myTable" class="display dataTable">
+    <thead>
+        <tr>
+            <th scope="col">Scientist Name</th>
+            <th scope="col">Timezone</th>
+            <th scope="col">Field</th>
+            <th scope="col">What they study</th>
+            <th scope="col">Remaining Sessions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sci in indata %}
+        <tr>
+            <th scope="row">{{ sci.name }}</th>
+            <td>{{ sci.timezone }}</td>
+            <td>{{ sci.field }}</td>
+            <td>{{ sci.description }}</td>
+            <td>{{ sci.num_remain }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <!-- Optional JavaScript -->
+    <!-- JavaScript Dependencies: jQuery, Popper.js, Bootstrap JS, Shards JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://confirm.skypeascientist.com/shards/shards.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" class="init">
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
+    {% endblock %}
