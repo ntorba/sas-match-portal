@@ -25,9 +25,26 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
     admin = db.Column(db.Boolean, nullable=False, default=False)
-    # match = db.relationship(
-    #     "Match", back_populates="user"
-    # )  # String THIS IS A LIST, CAN HAVE MULTIPLE
+    pronouns = db.Column(db.String)
+    scienist_group = db.Column(db.String)
+    career_stage = db.Column(db.String)
+    time_zone = db.Column(db.String)
+    science_category = db.Column(db.String)
+    time_zone = db.Column(db.String)
+    keywrods = db.Column(db.String)
+    # availability = db.Column(db.String), TODO, find a better system for this
+    languages = db.Column(db.String)
+    background = db.Column(db.String)
+    do_not_match_groups = db.Column(db.String)
+    open_to_faith_affiliation = db.Column(db.Boolean)
+    searchable = db.Column(db.Boolean)
+    instagram_photo = db.Column(db.LargeBinary)
+    instagram_caption = db.Column(db.String)
+    discovery_medium = db.Column(db.String)
+    group_organization = db.Column(db.String)
+    commitment = db.Column(db.Boolean)
+    receive_emails = db.Column(db.Boolean)
+    code_of_conduct = db.Column(db.Boolean)
 
     def __init__(self, password, *args, admin=False, **kwargs):
         self.password = bcrypt.generate_password_hash(password)
