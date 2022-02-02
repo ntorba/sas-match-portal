@@ -29,13 +29,11 @@ class User(db.Model):
     #     "Match", back_populates="user"
     # )  # String THIS IS A LIST, CAN HAVE MULTIPLE
 
-    def __init__(self, role, email, password, admin=False):
-        self.role = role
-        self.email = email
+    def __init__(self, password, *args, admin=False, **kwargs):
         self.password = bcrypt.generate_password_hash(password)
         self.registered_on = datetime.datetime.now()
         self.admin = admin
-        super().__init__()
+        super().__init__(*args, **kwargs)
 
     def is_authenticated(self):
         return True
@@ -81,15 +79,7 @@ class Match(db.Model):
     def __init__(
         self,
         leader_id,
-        name,
-        school_district,
-        city,
-        state,
-        country,
-        time_zone,
-        monday_start_time,
-        scientist_preferred_type,
-        scientist_id=None,
+        *args,
         **kwargs,
     ):
         leader = User.query.filter(User.id == leader_id).first()
@@ -98,14 +88,6 @@ class Match(db.Model):
                 f"Matches must be created by group leaders! This user is role {leader.role.name}"
             )
         self.leader_id = leader_id
-        self.name = name
-        self.school_district = school_district
-        self.city = city
-        self.state = state
-        self.country = country
-        self.time_zone = time_zone
-        self.monday_start_time = monday_start_time
-        self.scientist_preferred_type = scientist_preferred_type
-        self.scientist_id = scientist_id
         self.registered_on = datetime.datetime.utcnow()
-        super().__init__()
+
+        super().__init__(*args, **kwargs)
