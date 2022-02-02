@@ -13,54 +13,52 @@ text-align: center;
 z-index: 11; /* 1px higher than the overlay layer */
 } -->
 
-<turbo-frame id="profileUpdateForm">
-    <a class="text-xs text-blue-400" href="{{ url_for('main.profile_deissapear') }}">Exit</a>
-    <form class="form-update-profile-reset" role="form" method="get" action="{{ url_for('main.profile_deissapear') }}">
-        <button
-            id="profileUpdateDisappearBtn"
-            type="hidden"
-        >
-            <div 
-                class="fixed top-0 left-0 h-full w-full bg-yellow-200 bg-opacity-50 z-10 "
-            >
-                {# <div
-                    class="w-300 w-64 h-48 leading-6 fixed top-1/2 left-1/2 -mt-48 -ml-64 bg-yellow-800 rounded-md text-center z-20"> #}
-                <div id="profileUpdateFormDiv" class="mt-24 flex items-center justify-center">
-                    <div class="my-auto w-1/2 bg-yellow-600 rounded-md z-20">
-                        <h1 class="mb-8 text-xl text-center">Update Profile</h1>
-                        <form class="form-register" role="form" method="post" action="{{ url_for('main.profile_update_form') }}">
-                            {{ form.csrf_token }}
-                            <div class="block bg-white border-solid border-2 border-gray-300 p-3 rounded mx-2 mb-4">
-                                <p class="text-left text-xs text-gray-600"><b>Name</b></p>
-                                <turbo-frame id="profile-update-name-errors"></turbo-frame>
-                                {{
-                                form.name(
-                                class="",
-                                value="Name"
-                                )
-                                }}
-                            </div>
-                            <div class="block bg-white border-solid border-2 border-gray-300 p-3 rounded mx-2 mb-4">
-                                <p class="text-left text-xs text-gray-600"><b>Email</b></p>
-                                <turbo-frame id="profile-update-email-errors">
-                                </turbo-frame>
-                                {{
-                                form.name(
-                                class="",
-                                value="Your@email.com"
-                                )
-                                }}
-                            </div>
-                            <button type="submit"
-                                data-action="submit->profileUpdate#"
-                                class="w-full text-center py-3 rounded bg-green-300 text-black hover:bg-green-600 focus:outline-none my-1">
-                                Save
-                            </button>
-                    </div>
+TODO: Figure out the best way to get updated profile info to show on the screen, either redirect or turbo-stream
+
+<turbo-frame id="profileUpdateForm" target="_top">
+    <div 
+        class="fixed top-0 left-0 h-full w-full bg-yellow-200 bg-opacity-50 z-10 "
+    >
+        {# <div
+            class="w-300 w-64 h-48 leading-6 fixed top-1/2 left-1/2 -mt-48 -ml-64 bg-yellow-800 rounded-md text-center z-20"> #}
+        <div id="profileUpdateFormDiv" class="mt-24 flex items-center justify-center">
+            <div class="my-auto w-1/2 bg-yellow-600 rounded-md z-20">
+                <h1 class="mb-4 text-xl text-center">Update Profile</h1>
+                <div class="text-center">
+                    <a class="m-2 bg-gray-200 rounded text-s text-gray-600" href="{{ url_for('main.profile_deissapear') }}">Exit</a>
                 </div>
+                <form class="form-register" role="form" method="post" action="{{ url_for('main.profile_update_form') }}">
+                    {{ form.csrf_token }}
+                    <div class="block bg-white border-solid border-2 border-gray-300 p-3 rounded mx-2 mb-4">
+                        <p class="text-left text-xs text-gray-600"><b>Name</b></p>
+                        <turbo-frame id="profile-update-name-errors"></turbo-frame>
+                        {{
+                        form.name(
+                        class="focus:outline-none",
+                        value=current_name
+                        )
+                        }}
+                    </div>
+                    <div class="block bg-white border-solid border-2 border-gray-300 p-3 rounded mx-2 mb-4">
+                        <p class="text-left text-xs text-gray-600"><b>Email</b></p>
+                        <turbo-frame id="profile-update-email-errors">
+                        </turbo-frame>
+                        {{
+                        form.email(
+                        class="focus:outline-none",
+                        value=current_email
+                        )
+                        }}
+                    </div>
+                    <div class="flex">
+                        <button type="submit"
+                            class="m-2 w-full text-center py-3 rounded bg-green-300 text-black hover:bg-green-600 focus:outline-none my-1"
+                            >
+                            Save
+                        </button>
+                    </div>
             </div>
-        </button>
-    </form>
-    {{ javascript_pack('profileUpdateForm', attrs='charset="UTF-8"') }}
+        </div>
+    </div>
 
 </turbo-frame>
