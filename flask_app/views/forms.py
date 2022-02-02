@@ -18,6 +18,13 @@ from wtforms.validators import DataRequired, Email, Length, EqualTo
 
 from ..models import User
 from ..extensions import bcrypt
+from ..form_constants import (
+    SCIENTIST_CATEGORIES,
+    LANGUAGES,
+    BACKGROUNDS,
+    DO_NOT_MATCH_GROUPS,
+    DISCOVERY_MEDIUMS,
+)
 
 
 class LoginForm(FlaskForm):
@@ -109,23 +116,6 @@ class GroupLeaderUpdateProfileForm(FlaskForm):
     email = StringField(
         "Email", validators=[DataRequired(), Email(message=None), Length(min=6, max=40)]
     )
-
-
-with open("scientist_fields.txt") as f:
-    SCIENTIST_CATEGORIES = [i.strip("\n") for i in f.readlines()]
-
-with open("languages.txt") as f:
-    LANGUAGES = [i.strip("\n") for i in f.readlines()]
-
-with open("racial_background.txt") as f:
-    BACKGROUNDS = [i.strip("\n") for i in f.readlines()]
-
-with open("match_groups.txt"):
-    DO_NOT_MATCH_GROUPS = [i.strip("\n") for i in f.readlines()]
-
-with open("discovery_mediums.txt"):
-    DISCOVERY_MEDIUMS = [i.strip("\n") for i in f.readlines()]
-
 
 class ScientistProfileForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired(), Length(max=100)])
