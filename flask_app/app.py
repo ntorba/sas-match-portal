@@ -7,7 +7,7 @@ from flask_login import current_user
 
 from flask_app.views import scientists
 
-from .extensions import db, cors, bcrypt, login_manager, admin, turbo
+from .extensions import db, cors, bcrypt, login_manager, admin, turbo, boostrap
 from .models import User, Match
 
 BASE_DIR = Path(__file__).parent.parent
@@ -63,6 +63,7 @@ def create_app(deploy_mode="Development", settings_override={}):
     login_manager.init_app(app)
     admin.init_app(app)
     turbo.init_app(app)
+    boostrap.init_app(app)
 
     admin.add_view(MyModelView(User, db.session))
     admin.add_view(MyModelView(Match, db.session))
