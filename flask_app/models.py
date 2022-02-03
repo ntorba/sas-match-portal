@@ -45,6 +45,7 @@ class User(db.Model):
     commitment = db.Column(db.Boolean)
     receive_emails = db.Column(db.Boolean)
     code_of_conduct = db.Column(db.Boolean)
+    profile_finished = db.Column(db.Boolean, default=False)
 
     def __init__(self, password, *args, admin=False, **kwargs):
         self.password = bcrypt.generate_password_hash(password)

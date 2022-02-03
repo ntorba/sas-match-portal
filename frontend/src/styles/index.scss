@@ -9,3 +9,15 @@
 .active {
   @apply text-blue-700;
 }
+
+.form-group {
+  @apply block bg-white border-solid border-2 border-gray-300 p-3 rounded mx-2 mb-4;
+}
+
+.control-label {
+  @apply text-xl text-blue-800;
+}
+
+.form-control {
+  @apply bg-gray-200;
+}

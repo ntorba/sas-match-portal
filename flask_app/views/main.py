@@ -1,9 +1,15 @@
 from flask import render_template, request, redirect, Blueprint, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 
+from flask_app.views.auth import login
+
 from ..models import User, Match
 from ..extensions import bcrypt, db
-from .forms import ChangePasswordForm, GroupLeaderUpdateProfileForm
+from .forms import (
+    ChangePasswordForm,
+    GroupLeaderUpdateProfileForm,
+    ScientistProfileForm,
+)
 
 main_blueprint = Blueprint("main", __name__, template_folder="templates")
 
@@ -33,11 +39,20 @@ def home():
 @main_blueprint.route("/profile")
 @login_required
 def profile():
-    return render_template(
-        "profile-group-leader.html",
-        current_user_name=current_user.name,
-        current_user_email=current_user.email,
-    )
+    form = ScientistProfileForm()
+    # breakpoint()
+    if current_user.role.name == "group_leader":
+        return render_template(
+            "profile-group-leader.html",
+            current_user_name=current_user.name,
+            current_user_email=current_user.email,
+        )
+    elif current_user.role.name == "scientist":
+        if current_user.profile_finished:
+            return render_template("profile-scientist.html")
+        else:
+            form = ScientistProfileForm()
+            return render_template("profile-scientist-update-form.html", form=form)
 
 
 @main_blueprint.route("/profile/update", methods=["GET", "POST"])

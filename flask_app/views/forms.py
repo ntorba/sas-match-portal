@@ -157,7 +157,7 @@ class ScientistProfileForm(FlaskForm):
         choices=BACKGROUNDS,
     )
     do_not_match_groups = SelectField(
-        "Language",  # TODO: Make the other option dynamic and ready for user input
+        "Do No Match Groups",  # TODO: Make the other option dynamic and ready for user input
         choices=DO_NOT_MATCH_GROUPS,
     )
     open_to_faith_affiliation = BooleanField("Open to faith affiliation")
