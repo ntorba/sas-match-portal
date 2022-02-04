@@ -52,7 +52,10 @@ def profile():
             return render_template("profile-scientist.html")
         else:
             form = ScientistProfileForm()
-            return render_template("profile-scientist-update-form.html", form=form)
+            return render_template(
+                "profile-scientist-finish-registration.html", form=form
+            )
+            # return render_template("profile-scientist-update-form.html", form=form)
 
 
 @main_blueprint.route("/profile/update", methods=["GET", "POST"])

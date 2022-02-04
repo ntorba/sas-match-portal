@@ -123,14 +123,43 @@ one, but does not try too hard to get things pretty. #}
             {% endcall %}
         {%- endif %}
     {%- else -%}
-        <div class="block bg-white border-solid border-2 border-gray-300 p-3 rounded mx-2 mb-4">
+        <div class="block bg-white border-solid border-2 shadow-md border-gray-600 p-3 rounded mx-2 mb-4">
             {# {{field.label(class="control-label")|safe}} #}
             <p class="text-left text-xl text-blue-800"><b>{{ field.label.text.capitalize() }}</b></p>
             {% if field.type == 'FileField' %}
                 {{field(**kwargs)|safe}}
                 {% else %}
                 {# {{field(class="form-control", **kwargs)|safe}} #}
-                {{field(class="focus:outline-none", placeholder=field.short_name, **kwargs)|safe}}
+                {# dropdown styling below from https://tailwind-elements.com/docs/standard/forms/select/ #}
+                {% if field.type == "SelectField" %}
+                    {{
+                        field( 
+                            class="focus:outline-none form-select form-select-lg mb-3
+                                block
+                                w-full
+                                px-4
+                                py-2
+                                text-xl
+                                font-normal
+                                text-gray-700
+                                bg-white bg-clip-padding bg-no-repeat
+                                border border-solid border-gray-300
+                                rounded
+                                transition
+                                ease-in-out
+                                m-0
+                                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none",
+                            **kwargs
+                        )|safe}}
+                {% elif field.type == "SelectMultipleField" %}
+                    {{
+                        field( 
+                            class="form-multiselect block w-full mt-1",
+                            **kwargs
+                        )|safe}}
+                {% else %}
+                    {{field(class="focus:outline-none border-gray-300 border-2", placeholder=field.short_name, **kwargs)|safe}}
+                {% endif %}
             {% endif %}
         </div>
         {%- if field.errors %}
